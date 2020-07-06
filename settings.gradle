@@ -1,0 +1,2 @@
+rootProject.name='BluTooth'
+include ':app'
