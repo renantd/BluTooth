@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static int SELECT_PAIRED_DEVICE = 2;
     public static int SELECT_DISCOVERED_DEVICE = 3;
 
+    /* Vaiaveis de Mensagens */
     private String bluetoothAtivadoSmile = "Bluetooth ativado :D";
     private String bluetoothAtivadoNotSmile = "Bluetooth não ativado :(";
     private String bluetoothDispositivoNotSelected = "Nenhum dispositivo selecionado :(";
