@@ -2,6 +2,7 @@ package br.sofex.com.blutooth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -17,39 +18,58 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: https://dragaosemchama.com/2015/05/programacao-bluetooth-no-android/
 
-    private static final int BT_ATIVAR = 0;
     Button Btn_Procurar;
-    TextView txt_View;
+    TextView resultadoDispositivos;
 
     public static int ENABLE_BLUETOOTH = 1;
     public static int SELECT_PAIRED_DEVICE = 2;
     public static int SELECT_DISCOVERED_DEVICE = 3;
 
+    private String bluetoothAtivadoSmile = "Bluetooth ativado :D";
+    private String bluetoothAtivadoNotSmile = "Bluetooth não ativado :(";
+    private String bluetoothDispositivoNotSelected = "Nenhum dispositivo selecionado :(";
+    private String bluetoothAtivado = "Bluetooth já ativado :)";
+    private String bluetoothSolicitacao = "Solicitando ativação do Bluetooth...";
+    private String bluetoothNaoFunciona = "Que pena! Hardware Bluetooth não está funcionando :(";
+
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txt_View = findViewById(R.id.txt_View);
-        Btn_Procurar = findViewById(R.id.Btn_Procurar);
-        Btn_Procurar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchPairedDevices();
-            }
-        });
+
+        resultadoDispositivos     = findViewById(R.id.resultadoDispositivos);
+        Btn_Procurar              = findViewById(R.id.Btn_Procurar);
+
+        /* Listener que fica escutando quando o botão é clicado
+        * Procura os dipositivos de blutooth */
+        Btn_Procurar.setOnClickListener(view -> searchPairedDevices());
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        /* verifica se o adpter for nulo o blutooth não está funcionando */
         if (btAdapter == null) {
-            txt_View.setText("Que pena! Hardware Bluetooth não está funcionando :(");
+
+            /* Seta a mensagem */
+            resultadoDispositivos.setText(bluetoothNaoFunciona);
+
         } else {
-            //txt_View.setText("Ótimo! Hardware Bluetooth está funcionando :)");
+
+            /* Verifica se o blutooth está habilitado */
             if(!btAdapter.isEnabled()) {
+
+                /* Habilita o blutooth */
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH);
-                txt_View.setText("Solicitando ativação do Bluetooth...");
+
+                /* Seta a mensagem */
+                resultadoDispositivos.setText(bluetoothSolicitacao);
             } else {
-                txt_View.setText("Bluetooth já ativado :)");
+
+                /* Seta a mensagem */
+                resultadoDispositivos.setText(bluetoothAtivado);
             }
         }
     }
@@ -59,26 +79,37 @@ public class MainActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
+        /* Verifica se o bluetooth está ativado */
         if(requestCode == ENABLE_BLUETOOTH) {
+
+            /* Se estiver habilitado  mostra a mensagem  de ativado, caso não mostra a mensagem
+            * que não está ativado */
             if(resultCode == RESULT_OK) {
-                txt_View.setText("Bluetooth ativado :D");
+
+                /* Seta a mensagem */
+                resultadoDispositivos.setText(bluetoothAtivadoSmile);
             }
             else {
-                txt_View.setText("Bluetooth não ativado :(");
+
+                /* Seta a mensagem */
+                resultadoDispositivos.setText(bluetoothAtivadoNotSmile);
             }
         }
+        /* Verifica se o bluetooth está ativado e se encontrou um dispositivo , emparelha  */
         else if(requestCode == SELECT_PAIRED_DEVICE) {
             if(resultCode == RESULT_OK) {
-                txt_View.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
-                        + data.getStringExtra("btDevAddress"));
+                String disposingSelectedTex = "Você selecionou " + data.getStringExtra("btDevName") + "\n"
+                        + data.getStringExtra("btDevAddress");
+                resultadoDispositivos.setText(disposingSelectedTex);
             }
             else {
-                txt_View.setText("Nenhum dispositivo selecionado :(");
+                resultadoDispositivos.setText(bluetoothDispositivoNotSelected);
             }
         }
     }
     public void searchPairedDevices() {
 
+        /* Procura pelos dispositivos */
         Intent searchPairedDevicesIntent = new Intent(this, PairedDevices.class);
         startActivityForResult(searchPairedDevicesIntent, SELECT_PAIRED_DEVICE);
     }

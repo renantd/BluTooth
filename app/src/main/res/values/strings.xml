@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BluTooth</string>
+    <string name="ResultadosDispositivosTexto">Dispositivos\n pareados</string>
+    <string name="DispositivosEncontradosTexto">{Dispositivos Encontrados}</string>
 </resources>

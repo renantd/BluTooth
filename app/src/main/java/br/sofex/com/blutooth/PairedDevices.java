@@ -23,7 +23,7 @@ public class PairedDevices  extends ListActivity {
 
         /*  Esse trecho não é essencial, mas dá um melhor visual à lista.
             Adiciona um título à lista de dispositivos pareados utilizando
-        o layout text_header.xml.
+            o layout text_header.xml.
         */
         ListView lv = getListView();
         LayoutInflater inflater = getLayoutInflater();
@@ -31,14 +31,12 @@ public class PairedDevices  extends ListActivity {
         ((TextView) header.findViewById(R.id.textView)).setText("\nDispositivos pareados\n");
         lv.addHeaderView(header, null, false);
 
-        /*  Usa o adaptador Bluetooth para obter uma lista de dispositivos pareados.
-         */
+        /*  Usa o adaptador Bluetooth para obter uma lista de dispositivos pareados.*/
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
 
         /*  Cria um modelo para a lista e o adiciona à tela.
-            Se houver dispositivos pareados, adiciona cada um à lista.
-         */
+            Se houver dispositivos pareados, adiciona cada um à lista.*/
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         setListAdapter(adapter);
         if (pairedDevices.size() > 0) {
@@ -59,7 +57,7 @@ public class PairedDevices  extends ListActivity {
          */
         String item = (String) getListAdapter().getItem(position-1);
         String devName = item.substring(0, item.indexOf("\n"));
-        String devAddress = item.substring(item.indexOf("\n")+1, item.length());
+        String devAddress = item.substring(item.indexOf("\n")+1);
 
         /*  Utiliza um Intent para encapsular as informações de nome e endereço.
             Informa à Activity principal que tudo foi um sucesso!

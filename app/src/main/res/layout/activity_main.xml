@@ -20,13 +20,13 @@
             android:id="@+id/Btn_Procurar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dispositivos\n pareados" />
+            android:text="@string/ResultadosDispositivosTexto" />
 
         <TextView
-            android:id="@+id/txt_View"
+            android:id="@+id/resultadoDispositivos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@string/DispositivosEncontradosTexto"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="18sp" />
